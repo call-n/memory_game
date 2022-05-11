@@ -1,5 +1,6 @@
 import './App.css';
 import { useState } from 'react';
+import Card from './components/Card';
 
 const cardImages = [
     { "src": "/img/helmet-1.png" },
@@ -12,6 +13,9 @@ const cardImages = [
 
 function App() {
   const [cards, setCards] = useState([])
+  const [turns, setTurns] = useState(0)
+  const [choiceOne, setChoiceOne] = useState(null)
+  const [choiceTwo, setChoiceTwo] = useState(null)
 
   const shuffleCards = () => {
     const shuffledCards = [...cardImages, ...cardImages]
@@ -19,13 +23,28 @@ function App() {
       .map((card) => ({ ...card, id: Math.random() }))
 
       setCards(shuffledCards)
+      setTurns(0)
   }
 
-  console.log(cards)
+  const handleChoice = (card) => {
+    choiceOne ? setChoiceTwo(card) : setChoiceOne(card)
+  }
 
   return (
     <div className="App">
+      <h1>Fortnite gaming</h1>
       <button onClick={shuffleCards} >Restart Game</button>
+      {turns}
+      <div className="card-grid">
+        {cards.map(card => (
+          <Card 
+            key={card.id} 
+            card={card} 
+            handleChoice={handleChoice}
+            />
+        ))}
+      </div>
+
     </div>
   );
 }
